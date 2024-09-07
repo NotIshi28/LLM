@@ -15,7 +15,7 @@ for p in pkgs:
 
 GPT_CONFIG_124M = {
     "vocab_size": 50257,   # Vocabulary size
-    "context_length": 1024, # Shortened context length (orig: 1024)
+    "context_length": 256, # Shortened context length (orig: 1024)
     "emb_dim": 768,        # Embedding dimension
     "n_heads": 12,         # Number of attention heads
     "n_layers": 12,        # Number of layers
@@ -58,8 +58,8 @@ while True:
   token_ids = generate_text_simple(
     model=model,
     idx=text_to_token_ids(contextc, tokenizer).to(device),
-    max_new_tokens=100,
-    context_size=1024
+    max_new_tokens=20,
+    context_size=256
   )
   print( token_ids_to_text(token_ids, tokenizer))
   print("\n")

@@ -6,12 +6,12 @@ import gdown
 import os
 
 
-model_url = "https://drive.google.com/uc?id=1pTPPleG3Q804ZQWkKKo_hTArrxFMYl_7"
-model_path = "model.pth"
+# model_url = "https://drive.google.com/uc?id=1pTPPleG3Q804ZQWkKKo_hTArrxFMYl_7"
+# model_path = "model.pth"
 
-# Download model if it doesn't exist
-if not os.path.exists(model_path):
-    gdown.download(model_url, model_path, quiet=False)
+# # Download model if it doesn't exist
+# if not os.path.exists(model_path):
+#     gdown.download(model_url, model_path, quiet=False)
 
 # Load tokenizer
 tokenizer = tiktoken.get_encoding("gpt2")
@@ -56,8 +56,8 @@ if st.button("Generate"):
         token_ids = generate_text_simple(
             model=model,
             idx=text_to_token_ids(context, tokenizer).to(device),
-            max_new_tokens=100,
-            context_size=1024
+            max_new_tokens=20,
+            context_size=256
         )
         generated_text = token_ids_to_text(token_ids, tokenizer)
         st.write(generated_text)
