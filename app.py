@@ -4,6 +4,8 @@ from supplementary import GPTModel, generate_text_simple
 import tiktoken
 import gdown
 import os
+from torch.quantization import quantize_dynamic
+
 
 
 model_url = "https://drive.google.com/uc?id=1pTPPleG3Q804ZQWkKKo_hTArrxFMYl_7"
@@ -32,6 +34,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = GPTModel(GPT_CONFIG_124M)
 model.load_state_dict(torch.load("model.pth", map_location=device, weights_only=True))
 model.eval()
+model_quantized = quantize_dynamic(model, {torch.nn.Linear}, dtype=torch.qint8)
 
 # Text to token IDs
 def text_to_token_ids(text, tokenizer):
@@ -54,10 +57,10 @@ context = st.text_input("Enter your text prompt")
 if st.button("Generate"):
     if context:
         token_ids = generate_text_simple(
-            model=model,
+            model=model_quantized,
             idx=text_to_token_ids(context, tokenizer).to(device),
             max_new_tokens=10,
-            context_size=128
+            context_size=0
         )
         generated_text = token_ids_to_text(token_ids, tokenizer)
         st.write(generated_text)
