@@ -5,7 +5,6 @@ matplotlib >= 3.7.1
 numpy >= 1.26.4
 tensorflow >= 2.15.0
 tqdm >= 4.66.1
-numpy >= 1.25
 pandas >= 2.2.1
 psutil >= 5.9.5
 litgpt[all] >= 0.4.1
