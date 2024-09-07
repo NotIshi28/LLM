@@ -6,12 +6,12 @@ import gdown
 import os
 
 
-# model_url = "https://drive.google.com/uc?id=1pTPPleG3Q804ZQWkKKo_hTArrxFMYl_7"
-# model_path = "model.pth"
+model_url = "https://drive.google.com/uc?id=1pTPPleG3Q804ZQWkKKo_hTArrxFMYl_7"
+model_path = "model.pth"
 
-# # Download model if it doesn't exist
-# if not os.path.exists(model_path):
-#     gdown.download(model_url, model_path, quiet=False)
+# Download model if it doesn't exist
+if not os.path.exists(model_path):
+    gdown.download(model_url, model_path, quiet=False)
 
 # Load tokenizer
 tokenizer = tiktoken.get_encoding("gpt2")
