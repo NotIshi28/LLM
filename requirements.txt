@@ -10,3 +10,4 @@ pandas >= 2.2.1
 psutil >= 5.9.5
 litgpt[all] >= 0.4.1
 gdown >= 5.2.0
+streamlit >=  1.38.0
