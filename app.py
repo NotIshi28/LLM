@@ -1,40 +1,44 @@
 import streamlit as st
 import torch
-from supplementary import GPTModel, generate_text_simple
+from req import GPTModel, generate_text_simple
 import tiktoken
-import gdown
-import os
 from torch.quantization import quantize_dynamic
 
 
+# Cache the model loading and tokenizer
+@st.cache_resource
+def load_tokenizer():
+    return tiktoken.get_encoding("gpt2")
 
-model_url = "https://drive.google.com/uc?id=1pTPPleG3Q804ZQWkKKo_hTArrxFMYl_7"
-model_path = "model.pth"
 
-# Download model if it doesn't exist
-if not os.path.exists(model_path):
-    gdown.download(model_url, model_path, quiet=False)
+@st.cache_resource
+def load_model():
+    # Define model configuration
+    GPT_CONFIG_124M = {
+        "vocab_size": 50257,
+        "context_length": 1024,
+        "emb_dim": 768,
+        "n_heads": 12,
+        "n_layers": 12,
+        "drop_rate": 0.1,
+        "qkv_bias": False
+    }
 
-# Load tokenizer
-tokenizer = tiktoken.get_encoding("gpt2")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load the model
-GPT_CONFIG_124M = {
-    "vocab_size": 50257,
-    "context_length": 1024,
-    "emb_dim": 768,
-    "n_heads": 12,
-    "n_layers": 12,
-    "drop_rate": 0.1,
-    "qkv_bias": False
-}
+    # Load the model
+    model = GPTModel(GPT_CONFIG_124M)
+    model.load_state_dict(torch.load("model.pth", map_location=device, weights_only=True))
+    model.eval()
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # Apply dynamic quantization to optimize the model
+    model_quantized = quantize_dynamic(model, {torch.nn.Linear}, dtype=torch.qint8)
 
-model = GPTModel(GPT_CONFIG_124M)
-model.load_state_dict(torch.load("model.pth", map_location=device, weights_only=True))
-model.eval()
-model_quantized = quantize_dynamic(model, {torch.nn.Linear}, dtype=torch.qint8)
+    return model_quantized, device
+
+# Cached functions for tokenizer and model
+tokenizer = load_tokenizer()
+model_quantized, device = load_model()
 
 # Text to token IDs
 def text_to_token_ids(text, tokenizer):
