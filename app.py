@@ -71,8 +71,8 @@ if st.button("Generate"):
         token_ids = generate_text_simple(
             model=model_quantized,
             idx=text_to_token_ids(context, tokenizer).to(device),
-            max_new_tokens=10,
-            context_size=0
+            max_new_tokens=100,
+            context_size=1024
         )
         generated_text = token_ids_to_text(token_ids, tokenizer)
         st.write(generated_text)
