@@ -64,7 +64,9 @@ st.title("LLM Text Generation")
 
 # Input field
 context = st.text_input("Enter your text prompt")
-token = int(st.text_input("Enter number of words to be generated"))
+token = st.number_input("Enter number of words to be generated", min_value=5, max_value=200, step=1)
+
+
 # Generate button
 if st.button("Generate"):
     if context:
