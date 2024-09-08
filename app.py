@@ -79,5 +79,38 @@ if st.button("Generate"):
         )
         generated_text = token_ids_to_text(token_ids, tokenizer)
         st.write(generated_text)
+        if generated_text:
+            st.download_button('Download Text', generated_text, file_name='generated_text.txt')
+
     else:
         st.write("Please enter a prompt!")
+
+with st.expander("Model Information"):
+    st.write("GPT Model: 124M parameters with 12 layers and 12 heads. Quantization applied for performance optimization.")
+
+
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        color: fff;
+        text-align: center;
+    }
+    .footer p {
+        font-size: 20px
+    }
+    .footer a{
+        text-decoration: none;
+        color: #fff;
+    }
+    </style>
+    <div class="footer">
+        <p>Made by <a href='https://notishi28.dev'>NotIshi28</a></p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
