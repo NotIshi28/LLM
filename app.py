@@ -13,7 +13,7 @@ model_path = "model.pth"
 if not os.path.exists(model_path):
     gdown.download(model_url, model_path, quiet=False)
 
-# Cache the model loading and tokenizer
+#caching the model to optimize the performance
 @st.cache_resource
 def load_tokenizer():
     return tiktoken.get_encoding("gpt2")
@@ -64,6 +64,7 @@ st.title("LLM Text Generation")
 
 # Input field
 context = st.text_input("Enter your text prompt")
+#number of tokes to be generated input
 token = st.number_input("Enter number of words to be generated", min_value=5, max_value=200, step=1)
 
 
