@@ -64,14 +64,14 @@ st.title("LLM Text Generation")
 
 # Input field
 context = st.text_input("Enter your text prompt")
-
+token = st.text_input("Enter number of words to be generated")
 # Generate button
 if st.button("Generate"):
     if context:
         token_ids = generate_text_simple(
             model=model_quantized,
             idx=text_to_token_ids(context, tokenizer).to(device),
-            max_new_tokens=100,
+            max_new_tokens=token,
             context_size=1024
         )
         generated_text = token_ids_to_text(token_ids, tokenizer)
