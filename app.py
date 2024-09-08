@@ -3,7 +3,15 @@ import torch
 from req import GPTModel, generate_text_simple
 import tiktoken
 from torch.quantization import quantize_dynamic
+import gdown
+import os
 
+model_url = "https://drive.google.com/uc?id=1pTPPleG3Q804ZQWkKKo_hTArrxFMYl_7"
+model_path = "model.pth"
+
+#Downloading the PyTorch Model
+if not os.path.exists(model_path):
+    gdown.download(model_url, model_path, quiet=False)
 
 # Cache the model loading and tokenizer
 @st.cache_resource
